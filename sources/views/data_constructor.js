@@ -1,0 +1,82 @@
+import { JetView } from "webix-jet";
+
+export default class DataConstructor extends JetView {
+    constructor(app, columns, elements, data) {
+        super(app)
+        this.columns = columns
+        this.elements = elements
+        this.data = data
+
+
+    }
+    config() {
+        const datatable = {
+            view: "datatable",
+            localId: "datatable",
+            columns: [...this.columns, { id: "empty", header: "", template: '<span class="removeItem"><i class="webix_icon wxi-trash"></i></span>', width: 50 }],
+            onClick: {
+                removeItem: (e, id) => {
+                    const form = this.$$("form")
+                    this.$$("datatable").remove(id)
+                    if (form.getValues().id == id) form.clear()
+                    return false
+                }
+            },
+            data: this.data,
+            select: true,
+            gravity: 2,
+            on: {
+                onAfterSelect: () => {
+                    const form = this.$$("form")
+                    form.setValues(this.$$("datatable").getSelectedItem())
+                    form.queryView({ view: "button", value: "Add" }).setValue("Edit")
+
+                },
+                onAfterUnSelect: () => {
+                    this.$$("form").queryView({ view: "button", value: "Edit" }).setValue("Add")
+                }
+            }
+        }
+        const form = {
+            view: "form",
+            localId: "form",
+            elements: [
+                ...this.elements,
+                {
+                    cols: [
+                        {
+                            view: "button", value: "Add", css: "webix_primary", click: () => {
+                                const form = this.$$("form")
+                                const formValues = form.getValues()
+                                const table = this.$$("datatable")
+                                if (formValues.Name) {
+                                    if (formValues.id) {
+                                        table.updateItem(formValues.id, formValues)
+                                        form.clear()
+                                        table.unselectAll()
+                                    }
+                                    else {
+                                        table.add(formValues)
+                                        form.clear()
+                                    }
+                                } else {
+                                    webix.message({ type: "error", text: "Invalid Value" })
+                                }
+                            }
+                        },
+                        {
+                            view: "button", value: "Clear", click: () => {
+                                this.$$("form").clear()
+                                this.$$("datatable").unselectAll()
+                            }
+                        }]
+                }, {}]
+        }
+        const ui = { cols: [datatable, form] }
+        return ui
+    }
+    init(view) {
+        const form = view.queryView({ view: "datatable" })
+        console.log(form)
+    }
+}
