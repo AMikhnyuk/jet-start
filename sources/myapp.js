@@ -1,5 +1,5 @@
 import "./styles/app.css";
-import { JetApp, EmptyRouter, HashRouter } from "webix-jet";
+import { JetApp, EmptyRouter, HashRouter, plugins } from "webix-jet";
 
 export default class MyApp extends JetApp {
 	constructor(config) {
@@ -7,14 +7,24 @@ export default class MyApp extends JetApp {
 			id: APPNAME,
 			version: VERSION,
 			router: BUILD_AS_MODULE ? EmptyRouter : HashRouter,
-			debug: true, 
+			debug: true,
 			start: "/top/contacts"
 		};
 
 		super({ ...defaults, ...config });
 	}
+	init() {
+		webix.storage.local.put("id", contactsCollection.getFirstId())
+
+	}
 }
 
 if (!BUILD_AS_MODULE) {
-	webix.ready(() => new MyApp().render());
+	const app = new MyApp()
+	webix.ready(() => {
+		app.use(plugins.Locale)
+		app.render()
+
+	});
+
 }
