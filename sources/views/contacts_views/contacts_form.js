@@ -39,7 +39,7 @@ export default class ContactsForm extends JetView {
 
 
         this.on(this.app, "itemSelect", (id) => {
-            view.setValues(contactsCollection.find(item => item.id == id)[0])
+            view.setValues(contactsCollection.find(item => item.id == id, true))
             webix.storage.local.put("id", id)
         })
         this.on(this.app, "itemRemove", (id) => {

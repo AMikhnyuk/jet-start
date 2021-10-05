@@ -13,10 +13,6 @@ export default class MyApp extends JetApp {
 
 		super({ ...defaults, ...config });
 	}
-	init() {
-		webix.storage.local.put("id", contactsCollection.getFirstId())
-
-	}
 }
 
 if (!BUILD_AS_MODULE) {

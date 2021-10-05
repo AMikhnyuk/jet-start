@@ -39,6 +39,7 @@ export default class ContactsList extends JetView {
         })
         this.on(this.app, "unselectList", () => {
             view.unselectAll()
+            this.show("/top/contacts")
         })
 
 

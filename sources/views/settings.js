@@ -6,7 +6,6 @@ export default class SettingsView extends JetView {
         const lang = this.app.getService("locale").getLang();
         const lang_segment = {
             view: "segmented",
-            name: "lang",
             options: [{ id: "en", value: "EN" }, { id: "ru", value: "RU" }],
             click: () => this.toggleLanguage(), value: lang
         }
