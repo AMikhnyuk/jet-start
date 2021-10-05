@@ -1,27 +1,29 @@
 import { JetView, plugins } from "webix-jet";
+import { contactsCollection } from "../models/collections";
 
 
 
 export default class TopView extends JetView {
 	config() {
-		var header = {
+		const _ = this.app.getService("locale")._;
+		const header = {
 			type: "header", template: this.app.config.name, css: "webix_header app_header"
 		};
 
-		var menu = {
+		const menu = {
 			view: "menu", id: "top:menu",
 			css: "app_menu",
 			width: 180, layout: "y", select: true,
 			template: "<span class='webix_icon #icon#'></span> #value# ",
 			data: [
-				{ value: "Contacts", id: "contacts", icon: "wxi-pencil" },
-				{ value: "Data", id: "data", icon: "wxi-folder" },
-				{ value: "Settings", id: "settings", icon: "wxi-dots" },
+				{ value: _("Contacts"), id: "contacts", icon: "wxi-pencil" },
+				{ value: _("Data"), id: "data", icon: "wxi-folder" },
+				{ value: _("Settings"), id: "settings", icon: "wxi-dots" },
 
 			]
 		};
 
-		var ui = {
+		const ui = {
 			type: "clean", paddingX: 5, css: "app_layout", cols: [
 				{ paddingX: 5, paddingY: 10, rows: [{ css: "webix_shadow_medium", rows: [header, menu] }] },
 				{
@@ -36,5 +38,6 @@ export default class TopView extends JetView {
 	}
 	init() {
 		this.use(plugins.Menu, "top:menu");
+		webix.storage.local.put("id", contactsCollection.getFirstId())
 	}
 }

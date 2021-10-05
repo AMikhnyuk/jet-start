@@ -10,6 +10,7 @@ export default class DataConstructor extends JetView {
 
     }
     config() {
+        const _ = this.app.getService("locale")._;
         const datatable = {
             view: "datatable",
             localId: "datatable",
@@ -29,11 +30,11 @@ export default class DataConstructor extends JetView {
                 onAfterSelect: () => {
                     const form = this.$$("form")
                     form.setValues(this.$$("datatable").getSelectedItem())
-                    form.queryView({ view: "button", value: "Add" }).setValue("Edit")
+                    this.$$("add_button").setValue(_("Edit"))
 
                 },
                 onAfterUnSelect: () => {
-                    this.$$("form").queryView({ view: "button", value: "Edit" }).setValue("Add")
+                    this.$$("add_button").setValue(_("Add"))
                 }
             }
         }
@@ -45,18 +46,18 @@ export default class DataConstructor extends JetView {
                 {
                     cols: [
                         {
-                            view: "button", value: "Add", css: "webix_primary", click: () => {
+                            view: "button", localId: "add_button", value: _("Add"), css: "webix_primary", click: () => {
                                 const form = this.$$("form")
                                 const formValues = form.getValues()
                                 const table = this.$$("datatable")
                                 if (formValues.Name) {
-                                    if (formValues.id) {
-                                        table.updateItem(formValues.id, formValues)
+                                    if (this.data.getItem(formValues.id)) {
+                                        this.data.updateItem(formValues.id, formValues)
                                         form.clear()
                                         table.unselectAll()
                                     }
                                     else {
-                                        table.add(formValues)
+                                        this.data.add(formValues)
                                         form.clear()
                                     }
                                 } else {
@@ -65,7 +66,7 @@ export default class DataConstructor extends JetView {
                             }
                         },
                         {
-                            view: "button", value: "Clear", click: () => {
+                            view: "button", value: _("Clear"), click: () => {
                                 this.$$("form").clear()
                                 this.$$("datatable").unselectAll()
                             }
@@ -77,6 +78,5 @@ export default class DataConstructor extends JetView {
     }
     init(view) {
         const form = view.queryView({ view: "datatable" })
-        console.log(form)
     }
 }

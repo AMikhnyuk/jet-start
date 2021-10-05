@@ -56,3 +56,7 @@
 	font-size:20px;
 	vertical-align:middle;
 }
+.list_space-between{
+    display:flex;
+    justify-content: space-between;
+}

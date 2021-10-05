@@ -1,34 +1,26 @@
 
 import { JetView } from "webix-jet";
-import { contacts } from "../models/contacts.js";
+import contacts_form from "./contacts_views/contacts_form.js";
+import contacts_list from "./contacts_views/contacts_list.js"
 
-export default class ContactsView extends JetView{
 
-	config(){
-		const contacts_list = {
-			view:"list",
-			template:"#id#. #Name# (#Email#)", 
-			gravity:2
-		};
-		const contacts_form = {
-			view:"form",
-			elements:[
-				{view:"text", label:"Name"}, {view:"text", label:"Email"},
-				{cols:[{view:"button", value:"Save", css:"webix_primary"},{},
-					{view:"button", value:"Cancel"}]}, {}]
-					
-		};
+export default class ContactsView extends JetView {
+
+	config() {
+		const list = contacts_list
+		const form = contacts_form
+
 		const contacts_ui = {
-			cols:[contacts_list, contacts_form]
+			cols: [list, form]
 		};
 
 		return contacts_ui;
-		
-	}
-	init(view){
-		view.queryView({view:"list"}).parse(contacts);
-	}
-	
 
-	
+	}
+
+
+
+
+
+
 }
