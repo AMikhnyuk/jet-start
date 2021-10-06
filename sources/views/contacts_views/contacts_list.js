@@ -9,9 +9,9 @@ export default class ContactsList extends JetView {
             localId: "contacts_list",
             scroll: false,
             template: function ({ Name, Email, Status, Country }) {
-                const country = countriesCollection.getItem(Country).Name
-                const status = statusesCollection.getItem(Status).Name
-                return `<div class="list_space-between"><div>${Name} from ${country}(Email: ${Email}, Status: ${status})</div><div><i class="webix_icon wxi-trash removeItem"></i></div></div>`
+                const country = countriesCollection.getItem(Country)
+                const status = statusesCollection.getItem(Status)
+                return `<div class="list_space-between"><div>${Name} from ${country ? country.Name : "Unknow"}(Email: ${Email}, Status: ${status ? status.Name : "Unknow"})</div><div><i class="webix_icon wxi-trash removeItem"></i></div></div>`
             },
             onClick: {
                 removeItem: (e, id) => {
@@ -37,11 +37,13 @@ export default class ContactsList extends JetView {
     init(view) {
         view.sync(contactsCollection)
 
+        webix.promise.all([contactsCollection.waitData, countriesCollection.waitData, statusesCollection.waitData])
+            .then(() => {
+                if (!webix.storage.local.get("id")) webix.storage.local.put("id", contactsCollection.getFirstId())
+                view.refresh()
+                view.select(webix.storage.local.get("id"))
 
-        contactsCollection.waitData.then(() => {
-
-            view.select(webix.storage.local.get("id"))
-        })
+            })
         this.on(this.app, "unselectList", () => {
             view.unselectAll()
             this.show("/top/contacts")

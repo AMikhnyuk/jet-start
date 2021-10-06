@@ -75,8 +75,7 @@ export default class DataConstructor extends JetView {
         const ui = { cols: [datatable, form] }
         return ui
     }
-    init(view) {
-        const form = view.queryView({ view: "datatable" })
+    init() {
         this.$$("datatable").sync(this.data)
     }
 }
