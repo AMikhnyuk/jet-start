@@ -22,7 +22,4 @@ export default class DataView extends JetView {
 		return data_ui;
 
 	}
-	init(view) {
-
-	}
 }

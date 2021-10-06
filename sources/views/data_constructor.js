@@ -18,12 +18,11 @@ export default class DataConstructor extends JetView {
             onClick: {
                 removeItem: (e, id) => {
                     const form = this.$$("form")
-                    this.$$("datatable").remove(id)
+                    this.data.remove(id)
                     if (form.getValues().id == id) form.clear()
                     return false
                 }
             },
-            data: this.data,
             select: true,
             gravity: 2,
             on: {
@@ -76,7 +75,7 @@ export default class DataConstructor extends JetView {
         const ui = { cols: [datatable, form] }
         return ui
     }
-    init(view) {
-        const form = view.queryView({ view: "datatable" })
+    init() {
+        this.$$("datatable").sync(this.data)
     }
 }

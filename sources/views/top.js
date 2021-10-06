@@ -38,6 +38,6 @@ export default class TopView extends JetView {
 	}
 	init() {
 		this.use(plugins.Menu, "top:menu");
-		webix.storage.local.put("id", contactsCollection.getFirstId())
+
 	}
 }
